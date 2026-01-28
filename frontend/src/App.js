@@ -24,18 +24,28 @@ function App() {
         setCurrentUser(null);
     };
 
+
     return (
-        <div className="App">
-            <h1>Full Stack Todo App</h1>
-            {/* Conditional rendering based on login status */}
-            {currentUser ? (
-                <TodoList username={currentUser} onLogout={handleLogout} />
-            ) : (
-                <Login onLogin={handleLogin} />
-            )}
+        <div className="min-h-screen flex flex-col items-center
+                  bg-gradient-to-br from-orange-300 to-red-400">
+
+          {/* Title */}
+          <h1 className="mt-16 mb-8 text-3xl font-bold">
+            Full Stack Todo App
+          </h1>
+      
+          {/* Content */}
+          {currentUser ? (
+            <TodoList username={currentUser} onLogout={handleLogout} />
+          ) : (
+            <Login onLogin={handleLogin} />
+          )}
+      
         </div>
-    );
+      );
+      
+      
+      
 }
 
 export default App;
-

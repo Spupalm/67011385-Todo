@@ -1,7 +1,7 @@
 // frontend/src/components/Login.js
 import React, { useState } from 'react';
 
-const API_URL = process.env.APIURL;
+const API_URL = 'http://localhost:5001/api';
 
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -48,21 +48,44 @@ function Login({ onLogin }) {
         }
     };
 
-    return (
-        <div>
-            <h2>Login (Username Only)</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Enter your username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <button type="submit">Login</button>
-            </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-        </div>
-    );
-}
 
+    return (
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
+        
+        <img
+          src="/cei-logo.png"
+          alt="Cei Logo"
+          className="w-10 mx-auto mb-4"
+        />
+    
+        <h2 className="text-xl font-semibold text-center mb-4">
+          Login
+        </h2>
+    
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full border rounded px-4 py-2"
+          />
+    
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded"
+          >
+            Login
+          </button>
+        </form>
+    
+        {error && (
+          <p className="text-red-500 text-sm mt-3 text-center">
+            {error}
+          </p>
+        )}
+      </div>
+    );
+    
+}
 export default Login;

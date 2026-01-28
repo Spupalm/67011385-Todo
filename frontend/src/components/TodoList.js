@@ -1,7 +1,7 @@
 // frontend/src/components/TodoList.js
 import React, { useState, useEffect } from 'react';
 
-const API_URL = process.env.APIURL;
+const API_URL = 'http://localhost:5001/api';
 
 function TodoList({ username, onLogout }) {
     const [todos, setTodos] = useState([]);
@@ -104,38 +104,80 @@ function TodoList({ username, onLogout }) {
     };
 
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2>Todo List for: {username}</h2>
-                <button onClick={handleLogout}>Logout</button>
+            <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6">
+                
+                {/* Header */}
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-800">
+                        Todo List for: <span className="text-indigo-600">{username}</span>
+                    </h2>
+                    <button
+                        onClick={handleLogout}
+                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                    >
+                        Logout
+                    </button>
+                </div>
+    
+                {/* Add Todo */}
+                <form onSubmit={handleAddTodo} className="flex gap-3 mb-6">
+                    <input
+                        type="text"
+                        placeholder="New Task"
+                        value={newTask}
+                        onChange={(e) => setNewTask(e.target.value)}
+                        className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    />
+                    <button
+                        type="submit"
+                        className="px-5 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
+                    >
+                        Add
+                    </button>
+                </form>
+    
+                {/* Todo List */}
+                <ul className="space-y-3">
+                    {todos.map(todo => (
+                        <li
+                            key={todo.id}
+                            className="flex items-center justify-between bg-gray-50 p-3 rounded-lg shadow-sm"
+                        >
+                            <div className="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    checked={!!todo.done}
+                                    onChange={() => handleToggleDone(todo.id, todo.done)}
+                                    className="w-5 h-5 accent-indigo-500"
+                                />
+                                <span
+                                    className={`text-gray-800 ${
+                                        todo.done ? 'line-through text-gray-400' : ''
+                                    }`}
+                                >
+                                    {todo.task}
+                                </span>
+                            </div>
+    
+                            <div className="flex items-center gap-3">
+                                <small className="text-gray-400">
+                                    {new Date(todo.updated).toLocaleString()}
+                                </small>
+                                <button
+                                    onClick={() => handleDeleteTodo(todo.id)}
+                                    className="px-3 py-1 bg-red-400 text-white rounded-md hover:bg-red-500 transition"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+    
             </div>
-            
-            <form onSubmit={handleAddTodo}>
-                <input
-                    type="text"
-                    placeholder="New Task"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                />
-                <button type="submit">Add Task</button>
-            </form>
-
-            <ul>
-                {todos.map(todo => (
-                    <li key={todo.id} style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>
-                        <input
-                            type="checkbox"
-                            checked={!!todo.done} // Convert MySQL's 0/1 to boolean
-                            onChange={() => handleToggleDone(todo.id, todo.done)}
-                        />
-                        {todo.task} 
-                        <small> (Updated: {new Date(todo.updated).toLocaleString()})</small>
-                        <button onClick={() => handleDeleteTodo(todo.id)} style={{ marginLeft: '10px' }}>Delete</button>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        
     );
 }
+    
 
 export default TodoList;
